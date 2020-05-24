@@ -1,2 +1,2 @@
 # web-apps
-practice for righting web applications in go
+practice for writting web applications in go
