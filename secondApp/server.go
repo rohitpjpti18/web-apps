@@ -1,15 +1,37 @@
 package main
 
 import (
-	"fmt"
+	"html/template"
+	"log"
 	"net/http"
+	"time"
 )
 
-func helloWorld(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello go web app")
+//PageVariables store date and time in struct
+type PageVariables struct {
+	Date string
+	Time string
 }
 
 func main() {
-	http.HandleFunc("/", helloWorld)
+	http.HandleFunc("/", HomePage)
 	http.ListenAndServe(":8080", nil)
+}
+
+// HomePage handles homepage route
+func HomePage(w http.ResponseWriter, r *http.Request) {
+	now := time.Now()              // find the time right now
+	HomePageVars := PageVariables{ // store the date and time in a struct
+		Date: now.Format("02-01-2006"),
+		Time: now.Format("15:04:05"),
+	}
+
+	t, err := template.ParseFiles("templates/homepage.html") // parse the html file homepage.html
+	if err != nil {                                          // if there is an error
+		log.Print("template parsing error: ", err) // log it
+	}
+	err = t.Execute(w, HomePageVars) // execute the template and pass it the HomePageVars struct to fill in the gaps
+	if err != nil {                  // if there is an error
+		log.Print("template executing error: ", err) // log it
+	}
 }
