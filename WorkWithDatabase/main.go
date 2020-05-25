@@ -2,16 +2,16 @@ package main
 
 import (
 	"database/sql"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
-
 type User struct {
-	id			int
-	username	string
-	surname		string
-	age			int
-	university	string
+	id         int
+	username   string
+	surname    string
+	age        int
+	university string
 }
 
 func checkError(err error) {
@@ -45,7 +45,7 @@ func getUsers(db *sql.DB, id2 int) User {
 	return User{}
 }
 
-func main(){
+func main() {
 	db, _ := sql.Open("sqlite3", "database/godb.db")
 	db.Exec("create table if not exists testTable (id integer, username text, surname text, age Integer, university text)")
 	addUser(db, "harry", "potter", 19, "Hogwarts")
